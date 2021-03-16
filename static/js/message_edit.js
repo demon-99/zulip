@@ -882,6 +882,23 @@ export function delete_message(msg_id) {
     if (currently_deleting_messages.includes(msg_id)) {
         hide_delete_btn_show_spinner(true);
     } else {
+        function removeTags(str) { 
+            if ((str===null) || (str==='')) 
+                return false; 
+            else
+                str = str.toString(); 
+            return str.replace( /(<([^>]+)>)/ig, ''); 
+        } 
+        var message = message_store.get(msg_id);
+        var text=message.content;
+        text=removeTags(text);
+        if(text.length <80){
+        document.getElementById("msg_info").innerHTML =  "\""+text+"\"";
+        }
+        else{
+            text=text.slice(0,80);
+            document.getElementById("msg_info").innerHTML =  "\""+text+"..."+"\"";
+        }
         hide_delete_btn_show_spinner(false);
     }
     $("#do_delete_message_button")
